@@ -1,0 +1,36 @@
+{
+  "name": "grunt-svg-combine",
+  "description": "Combine multiple svg files in one single file.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/schonert/grunt-svg-combine",
+  "author": {
+    "name": "Stefan Schonert",
+    "email": "sh@schonert.dk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gruntjs/grunt-init-gruntplugin.git"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0"
+  },
+  "dependencies": {
+    "svgo": "~0.4.1",
+    "cheerio": "^0.13.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.4"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}

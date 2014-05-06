@@ -1,32 +1,75 @@
-# grunt-init-gruntplugin
+# grunt-svg-combine
 
-> Create a gruntplugin module with [grunt-init][], including Nodeunit unit tests.
+> Combine multiple svg files in one single file.
 
-[grunt-init]: http://gruntjs.com/project-scaffolding
+## Getting Started
+This plugin requires Grunt `~0.4.4`
 
-## Installation
-If you haven't already done so, install [grunt-init][].
+If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
-Once grunt-init is installed, place this template in your `~/.grunt-init/`
-directory. It's recommended that you use git to clone this template into that
-directory, as follows:
-
-```
-git clone https://github.com/gruntjs/grunt-init-gruntplugin.git ~/.grunt-init/gruntplugin
+```shell
+npm install grunt-svg-combine --save-dev
 ```
 
-_(Windows users, see [the documentation][grunt-init] for the correct
-destination directory path)_
+Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
-## Usage
-
-At the command-line, cd into an empty directory, run this command and follow
-the prompts.
-
-```
-grunt-init gruntplugin
+```js
+grunt.loadNpmTasks('grunt-svg-combine');
 ```
 
-_Note that this template will generate files in the current directory, so be
-sure to change to a new directory first if you don't want to overwrite existing
-files._
+## Description
+Combine multiple svg files in one single file. Each svg is minfied with [SVGO](https://github.com/svg/svgo/) before stored. 
+
+## The "svgcombine" task
+
+### Overview
+In your project's Gruntfile, add a section named `svgcombine` to the data object passed into `grunt.initConfig()`.
+
+```js
+grunt.initConfig({
+  svgcombine: {
+    options: {
+      // Task-specific options go here.
+    },
+    your_target: {
+      // Target-specific file lists and/or options go here.
+    },
+  },
+});
+```
+
+### Options
+
+#### options.prefix
+Type: `String`
+Default value: `''`
+
+A string value that is used to prefix the svg id.
+
+#### options.prefix
+Type: `Boolean`
+Default value: `true`
+
+Sends each SVG through [SVGO](https://github.com/svg/svgo/) before storing them. For a more customizable SVGO solution, consider creating a separat grunt task with [grunt-svgmin](https://github.com/sindresorhus/grunt-svgmin).
+
+### Usage Examples
+
+#### Default Options
+In this example we are creating a single html file that contains all svg's. Each svg will get an `id` eaqual to it's filename
+
+```js
+grunt.initConfig({
+  svgcombine: {
+    files: {
+      'svg-cache.html': ['svg/*.svg'],
+    },
+  },
+});
+```
+
+
+## Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+
+## Release History
+_(Nothing yet)_
