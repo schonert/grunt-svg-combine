@@ -64,7 +64,6 @@ module.exports = function(grunt) {
 				// Sets id
 				svg.attr('id', options.prefix + fileName);
 
-
 				// Stores svg with linebreak
 				destinationContent += svg + '\n';
 
@@ -74,7 +73,7 @@ module.exports = function(grunt) {
 			grunt.file.write(f.dest, destinationContent);
 
 			// Finally done!
-			grunt.log.writeln('There you go my friend "' + f.dest + '" was created with specially for you ♥');
+			grunt.log.writeln('There you go my friend "' + f.dest + '" was created specially for you ♥');
 		});
 	});
 };
