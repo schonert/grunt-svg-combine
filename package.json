@@ -1,7 +1,7 @@
 {
   "name": "grunt-svg-combine",
   "description": "Combine multiple svg files in one single file.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/schonert/grunt-svg-combine",
   "author": {
     "name": "Stefan Schonert",

@@ -25,19 +25,6 @@ Combine multiple svg files in one single file. Each svg is minfied with [SVGO](h
 ### Overview
 In your project's Gruntfile, add a section named `svgcombine` to the data object passed into `grunt.initConfig()`.
 
-```js
-grunt.initConfig({
-  svgcombine: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
-});
-```
-
 ### Options
 
 #### options.prefix
@@ -46,11 +33,23 @@ Default value: `''`
 
 A string value that is used to prefix the svg id.
 
-#### options.prefix
+#### options.minify
 Type: `Boolean`
 Default value: `true`
 
 Sends each SVG through [SVGO](https://github.com/svg/svgo/) before storing them. For a more customizable SVGO solution, consider creating a separat grunt task with [grunt-svgmin](https://github.com/sindresorhus/grunt-svgmin).
+
+#### options.filter
+Type: `function`
+Params: `[object cheerio]: the svg`, `string: file name`, `string: file path`
+
+Filter through each svg, before it gets stored.
+
+#### options.append
+Type: `append`
+Default value: `true`
+
+If there are multiple tasks with the same destination, svg's are by default appended to the destination, instead of overwriting
 
 ### Usage Examples
 
@@ -67,9 +66,39 @@ grunt.initConfig({
 });
 ```
 
+#### Filter and append
+In this example we are creating a single html file that contains all svg's. Each svg will get an `id` eaqual to it's filename
+
+```js
+grunt.initConfig({
+  svgcombine: {
+    options: {
+      filter: function(svg,fileName,filePath){ // global filter
+        if(fileName === 'icon')
+          svg.attr('class', 'icon');
+      },
+      append: true
+    },
+    all: {
+      files: {
+        'svg-cache.html': ['svg/*.svg'],
+      }
+    },
+    illustrations: {
+      files: {
+        'svg-cache.html': ['illustrations/*.svg'],
+      },
+      options: {
+        filter: function(svg, fileName, filePath){ // local filter overrides global
+          svg.attr('class', 'illustration');
+        }
+      }
+    }
+  },
+});
+```
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
-## Release History
-_(Nothing yet)_
