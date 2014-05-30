@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/gruntjs/grunt-init-gruntplugin.git"
+    "url": "https://github.com/schonert/grunt-svg-combine"
   },
   "engines": {
     "node": ">= 0.8.0"
