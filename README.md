@@ -45,6 +45,11 @@ Params: `[object cheerio]: the svg`, `string: file name`, `string: file path`
 
 Filter through each svg, before it gets stored.
 
+### options.svgo
+Type: `object`
+
+Options to pass along to the svgo-instance. Most likely plugin-options.
+
 #### options.append
 Type: `append`
 Default value: `true`
@@ -66,7 +71,7 @@ grunt.initConfig({
 });
 ```
 
-#### Filter and append
+#### Filter, svgo and append
 In this example we are creating a single html file that contains all svg's. Each svg will get an `id` eaqual to it's filename
 
 ```js
@@ -76,6 +81,11 @@ grunt.initConfig({
       filter: function(svg,fileName,filePath){ // global filter
         if(fileName === 'icon')
           svg.attr('class', 'icon');
+      },
+      svgo: {
+        'plugins':[
+          {'cleanupIDs':false}
+        ]
       },
       append: true
     },
