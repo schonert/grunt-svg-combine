@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 		});
 
 		// Used to minify
-		var svgo = new SVGO();
+		var svgo = new SVGO(options.svgo);
 
 		// Determin filter
 		var filter = options.filter;
