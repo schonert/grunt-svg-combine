@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "svgo": "~0.4.1",
-    "cheerio": "~0.13.1"
+    "cheerio": "~0.13.1",
+    "pretty-bytes":"~0.1.1"
   },
   "peerDependencies": {
     "grunt": "~0.4.4"
