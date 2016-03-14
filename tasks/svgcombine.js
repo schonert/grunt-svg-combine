@@ -11,7 +11,7 @@
 var cheerio = require('cheerio'), // Serverside jQery - used to change id
 	SVGO = require('svgo'), // Minify svg
 	path = require('path'), // Gets file name from path
-	prettyBytes = require('pretty-bytes'); 
+	prettyBytes = require('pretty-bytes');
 
 module.exports = function(grunt) {
 
@@ -19,9 +19,9 @@ module.exports = function(grunt) {
 
 	// Add task
 	grunt.registerMultiTask('svgcombine', 'Combine multiple svg files in one single file.', function() {
-		
+
 		// Default options
-		var options = this.options({
+		var defaults = this.options({
 			prefix: '', // Prefix the stored svg id
 			minify: true, // Throw svg through SVGO
 			filter: null, // a function called right before storing svg
@@ -29,10 +29,10 @@ module.exports = function(grunt) {
 		});
 
 		// Used to minify
-		var svgo = new SVGO(options.svgo);
+		var svgo = new SVGO(defaults.svgo);
 
 		// Determin filter
-		var filter = options.filter;
+		var filter = defaults.filter;
 
 		// Total amount of files
 		var totalFiles = 0;
@@ -45,13 +45,17 @@ module.exports = function(grunt) {
 
 		// Each destination
 		this.files.forEach(function(f) {
+			var options = {};
 			var destinationContent = ''; // Contains svg's
-			
+
+			Object.keys(defaults).forEach(function(key) {
+				options[key] = f.options && f.options[key] ? f.options[key] : defaults[key];
+			});
+
 			totalFiles += f.src.length;
-		
+
 			// Check path
 			f.src.filter(function(filePath){
-
 				// Check if files exist
 				if (!grunt.file.exists(filePath)) {
 					grunt.log.warn('Dooh! "' + filePath + '" ain\'t there!.');
@@ -60,42 +64,48 @@ module.exports = function(grunt) {
 				} else {
 					return true;
 				}
-
-				
 			})
 			// Loop through src files
 			.map(function(filePath){
-				var svgContent; // svg content
+				// Cheerio element
+				var svg;
+
+				// raw svg
+				var svgRaw;
+
+				// Filtered raw svg
+				var filteredSvg;
 
 				// get content
 				if(options.minify){
 					svgo.optimize(grunt.file.read(filePath), function(result) {
+
 						// Error
 						if (result.error){ return grunt.warn('Error parsing SVG: (' + filePath + ') ' + result.error);}
-						
-						svgContent = result.data;
+
+						svgRaw = result.data;
 					});
 				}else{
-					svgContent = grunt.file.read(filePath);
+					svgRaw = grunt.file.read(filePath);
 				}
 
-				var	svg = cheerio.load(svgContent, {ignoreWhitespace: true, xmlMode: true})('svg'), // stored as cheerio obj
+				var	svg = cheerio.load(svgRaw, {ignoreWhitespace: true, xmlMode: true})('svg'), // stored as cheerio obj
 					fileName = path.basename(filePath, '.svg'); // u should be able to figure this one out
 
 				// Sets id
 				svg.attr('id', options.prefix + fileName);
 
 				if(typeof filter === "function"){
-					filter(svg, fileName, filePath);
+					filteredSvg = filter(svg, fileName, filePath, svgRaw);
+					svg = filteredSvg ? cheerio.load(filteredSvg, {ignoreWhitespace: true, xmlMode: true})('svg') : svg;
 				}
 
-				grunt.log.writeln(filePath + ' (' + prettyBytes(svgContent.length) + ')');
+				grunt.log.writeln(filePath + ' (' + prettyBytes(svgRaw.length) + ')');
 
 				// Stores svg with linebreak
 				destinationContent += svg + '\n';
 
-				bytesSaved += svgContent.length - svg.html().length;
-
+				bytesSaved += svgRaw.length - svg.html().length;
 			});
 
 			// Save
