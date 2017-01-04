@@ -92,9 +92,6 @@ module.exports = function(grunt) {
 				var	svg = cheerio.load(svgRaw, {ignoreWhitespace: true, xmlMode: true})('svg'), // stored as cheerio obj
 					fileName = path.basename(filePath, '.svg'); // u should be able to figure this one out
 
-				// Sets id
-				svg.attr('id', options.prefix + fileName);
-
 				if(typeof filter === "function"){
 					filteredSvg = filter(svg, fileName, filePath, svgRaw);
 					svg = filteredSvg ? cheerio.load(filteredSvg, {ignoreWhitespace: true, xmlMode: true})('svg') : svg;
